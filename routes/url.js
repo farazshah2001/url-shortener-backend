@@ -8,28 +8,35 @@ router.get('/', function(req, res, next) {/**getting all objects in the urls dat
   .then(gets=>res.json(gets))
   .catch(err => res.status(400).json('Erros : ' + err));
 });
+router.get('/redirect', function(req, res, next) {/**getting all objects in the urls database */
+  const slug = req.query.slug
+  res.redirect(slug);
+});
 router.get('/:id', function(req, res, next) {/** getting an object using id from the urls database */
     const id = req.params.id;
     URL.find({_id:id})
       .then(gets=>res.json(gets))
       .catch(err => res.status(400).json('Erros : ' + err));
 });
-router.post('/check',async function(req,res,next){/**check route , gets the value from the form input , return the corresponding slug or url */
+router.post('/check/:url',async function(req,res,next){/**check route , gets the value from the form input , return the corresponding slug or url */
   const url = req.body.url;
-  
+  console.log(url);
   if(!url){/**cheching for empty url */
     res.send({message:"invalid url"})/**error message sent */
   }else{
     const urlobject= await URL.find({url:url});/**searching an object in the db with the url equal to the one in the request body */
 
     if(urlobject[0]){
+      console.log("sending slug");
       res.send({slug:urlobject[0].slug});/**sending the corresponding slug */
     }else{
-      const slugobject = await URL.find({slug:url});/**searching an object in the db with the url equal to the one in the request body */
+      const slugobject = await URL.find({slug:"https://url-slug-node.herokuapp.com/url/rediect?slug="+url});/**searching an object in the db with the url equal to the one in the request body */
       if(slugobject[0]){
+        console.log("slug");
         res.send({url:slugobject[0].url})/**sending the corresponding url */
       }else{
-        const newurl = new URL({url,slug:randomstring.generate(10)});/**if the url or slug  does not exist in the database, an object is generated */
+        console.log("new");
+        const newurl = new URL({url,slug:"https://url-slug-node.herokuapp.com/url/rediect?slug="+randomstring.generate(10)});/**if the url or slug  does not exist in the database, an object is generated */
         newurl.save();
         res.send({slug:newurl.slug});/**the created slug is returned  */
       }
