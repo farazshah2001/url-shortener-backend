@@ -43,6 +43,8 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+
+// (connection string) --> "mongodb+srv://farazshah2001:Lumbarjack35@cluster0.5qvcx.mongodb.net/urls_db?retryWrites=true&w=majority"
 const connectionString = process.env.DB_CONNECTION;
 mongoose.connect(connectionString, {useNewUrlParser: true,useUnifiedTopology: true});
 const db = mongoose.connection;
