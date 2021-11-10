@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
-
-const URL = require("../models/Url")
+var randomstring = require("randomstring");
+const {URL} = require("../models/Url")
 
 router.get('/', function(req, res, next) {
   URL.find()
@@ -14,15 +14,30 @@ router.get('/:id', function(req, res, next) {
       .then(gets=>res.json(gets))
       .catch(err => res.status(400).json('Erros : ' + err));
 });
-router.post('/check',function(){
+router.post('/check',async function(req,res,next){
   const url = req.body.url;
-  URL.find({url:url})
-  .then(gets=>res.json(gets))
-  .catch(err => res.status(400).json('Erros : ' + err));
-  URL.find({slug:url})
-  .then(gets=>res.json(gets))
-  .catch(err => res.status(400).json('Erros : ' + err));
+  
+  if(!url){
+    res.send({message:"invalid url"})
+  }else{
+    const urlobject= await URL.find({url:url});
 
+    if(urlobject[0]){
+      res.send({slug:urlobject[0].slug});
+    }else{
+      const slugobject = await URL.find({slug:url});
+      if(slugobject[0]){
+        res.send({url:slugobject[0].url})
+      }else{
+        const newurl = new URL({url,slug:randomstring.generate(10)});
+        newurl.save();
+        res.send({slug:newurl.slug});
+      }
+    }
+  }
+  
+  
+  
 })
 
 
