@@ -18,7 +18,7 @@ router.get('/:id', function(req, res, next) {/** getting an object using id from
       .then(gets=>res.json(gets))
       .catch(err => res.status(400).json('Erros : ' + err));
 });
-router.post('/check/:url',async function(req,res,next){/**check route , gets the value from the form input , return the corresponding slug or url */
+router.post('/check',async function(req,res,next){/**check route , gets the value from the form input , return the corresponding slug or url */
   const url = req.body.url;
   console.log(url);
   if(!url){/**cheching for empty url */
