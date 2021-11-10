@@ -38,7 +38,7 @@ router.post('/check',async function(req,res,next){/**check route , gets the valu
         res.send({url:slugobject[0].url})/**sending the corresponding url */
       }else{
         console.log("new");
-        const newurl = new URL({url,slug:"https://url-slug-node.herokuapp.com/url/rediect?slug="+randomstring.generate(10)});/**if the url or slug  does not exist in the database, an object is generated */
+        const newurl = new URL({url,slug:"https://url-slug-node.herokuapp.com/url/redierct?slug="+randomstring.generate(10)});/**if the url or slug  does not exist in the database, an object is generated */
         newurl.save();
         res.send({slug:newurl.slug});/**the created slug is returned  */
       }
