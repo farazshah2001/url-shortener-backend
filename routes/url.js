@@ -12,7 +12,7 @@ router.get('/redirect',async function(req, res, next) {/**getting all objects in
   const slug = req.query.slug;
   const slugobject = await URL.find({slug:slug});
   if(slugobject[0]){
-    res.redirect(slugobject.url);
+    res.redirect(slugobject[0].url);
   }
 });
 router.get('/:id', function(req, res, next) {/** getting an object using id from the urls database */
