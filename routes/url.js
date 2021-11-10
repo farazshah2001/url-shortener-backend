@@ -10,7 +10,8 @@ router.get('/', function(req, res, next) {/**getting all objects in the urls dat
 });
 router.get('/redirect',async function(req, res, next) {/**getting all objects in the urls database */
   const slug = req.query.slug;
-  const slugobject = await URL.find({slug:slug});
+  console.log(slug);
+  const slugobject = await URL.find({slug:"https://url-slug-node.herokuapp.com/url/redirect?slug="+slug});
   if(slugobject[0]){
     res.redirect(slugobject[0].url);
   }
